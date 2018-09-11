@@ -1,5 +1,6 @@
 package com.example.lb29_05.prototipo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,14 +18,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView iv1;
     Button bt1;
+    Switch sw1;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+    String codigo;
+    int duracao = Toast.LENGTH_LONG;
+    List<Imagem> imagens = new ArrayList<Imagem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +57,15 @@ public class MainActivity extends AppCompatActivity
         //Atribuindo o ID do button da tela principal (content_main)
         bt1 = (Button)findViewById(R.id.button1);
 
+        //Atribuindo o ID do switch da tela principal (content_main)
+        sw1 = (Switch)findViewById(R.id.switch1);
+
+        //Quando o botão for apertado ele abrirá a galeria chamando a função "openGallery()" e também irá tornar o switch1 visível após escolher a imagem
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
+                sw1.setVisibility(View.VISIBLE);
             }
         });
 
@@ -65,17 +79,28 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    //Função para abrir a galeria
     private void openGallery(){
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    //Função para pedir o código da foto e retornar o resultado com os dados pedidos
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult (requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
             iv1.setImageURI(imageUri);
+
+            codigo = imageUri.toString();
+            Imagem img = new Imagem();
+            //img.rotulos.add(set); Poderia ser usado para interagir com os rótulos da imagem também, porém é apenas a ideia
+            //imagens.setId_imagem(codigo);
+
+
+            Toast toast = Toast.makeText(getApplicationContext(), codigo, duracao);
+            toast.show();
         }
     }
 
