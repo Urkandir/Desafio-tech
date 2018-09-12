@@ -5,7 +5,8 @@ import java.util.List;
 
 public class Imagem {
     private String id_imagem;
-    private boolean rotulo;
+    //private boolean rotulo;
+    List<Rotulo> rotulos = new ArrayList<Rotulo>(); //Lista de objetos da classe rotulos
     //Pode ter uma lista de rótulos ou "perguntas"
 
 
@@ -17,21 +18,11 @@ public class Imagem {
         return id_imagem;
     }
 
-    public void setRotulo(boolean parametroRotulo) {
+    /*public void setRotulo(boolean parametroRotulo) {
         rotulo = parametroRotulo;
     }
 
     public boolean getRotulo() {
         return rotulo;
-    }
-
-    List<Rotulo> rotulos = new ArrayList<Rotulo>(){ //Lista de objetos da classe rotulos
-
-        {
-            Rotulo r = new Rotulo(); //Objeto
-            r.setNome_rotulo("Há pessoas na foto?");
-            rotulos.add(r);
-        }
-
-    };
+    }*/
 }

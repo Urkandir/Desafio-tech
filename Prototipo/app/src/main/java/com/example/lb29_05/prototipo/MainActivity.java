@@ -19,16 +19,18 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    final ImageDbHelper ImageDbHelper = new ImageDbHelper(this);
     ImageView iv1;
     Button bt1;
     Switch sw1;
+    TextView tv1;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
     String codigo;
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity
 
         //Atribuindo o ID do switch da tela principal (content_main)
         sw1 = (Switch)findViewById(R.id.switch1);
+
+        tv1 = (TextView)findViewById(R.id.textView1);
 
         //Quando o botão for apertado ele abrirá a galeria chamando a função "openGallery()" e também irá tornar o switch1 visível após escolher a imagem
         bt1.setOnClickListener(new View.OnClickListener() {
@@ -93,13 +97,23 @@ public class MainActivity extends AppCompatActivity
             imageUri = data.getData();
             iv1.setImageURI(imageUri);
 
-            codigo = imageUri.toString();
-            Imagem img = new Imagem();
-            //img.rotulos.add(set); Poderia ser usado para interagir com os rótulos da imagem também, porém é apenas a ideia
-            //imagens.setId_imagem(codigo);
+            codigo = imageUri.toString(); //Este código pega o que será usado como "ID da imagem"
+            Imagem img = new Imagem(); //Instância um objeto da classe imagem
+            img.setId_imagem(codigo); //Define o ID_imagem deste objeto como o código que foi pego
+            Rotulo r = new Rotulo(); //Instancia um novo rótulo
+            r.setNome_rotulo(sw1.getText().toString()); // Define o nome do rótulo como o nome que está no Switch, ou seja, o Switch é a pergunta, esta pergunta é o nome dado ao rótulo(Ou poderiamos chamar o rótulo de pergunta em outra palavras)
 
+            r.setAplicavel(sw1.isChecked()); // Adiciona a boolean se o rótulo é aplicável ou não
 
-            Toast toast = Toast.makeText(getApplicationContext(), codigo, duracao);
+            img.rotulos.add(r); //Poderia ser usado para interagir com os rótulos da imagem também, porém é apenas a ideia - EDIT: Adiciona o rótulo criado na ArrayList da classe Imagem
+
+            imagens.add(img);
+
+            String teste = sw1.getText().toString();
+
+            tv1.setText(codigo);
+
+            Toast toast = Toast.makeText(getApplicationContext(), teste, duracao);
             toast.show();
         }
     }
